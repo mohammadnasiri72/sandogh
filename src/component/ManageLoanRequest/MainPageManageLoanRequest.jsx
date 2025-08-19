@@ -1,0 +1,423 @@
+import {
+  Autocomplete,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setQuery,
+  setValCooperative,
+  setValRecord,
+  setValSort,
+} from "../../redux/slice/adminLoanRequest";
+import { mainDomain } from "../../utils/mainDomain";
+import TableAdminLoanRequest from "./TableAdminLoanRequest";
+import TabsAdminLoanRequest from "./TabsAdminLoanRequest";
+
+export default function MainPageManageLoanRequest() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const themeMode = useSelector((store) => store.setting.themeMode);
+  const valCooperative = useSelector(
+    (store) => store.adminLoanRequest.valCooperative
+  );
+  const valSort = useSelector((store) => store.adminLoanRequest.valSort);
+  const query = useSelector((store) => store.adminLoanRequest.query);
+  const valRecord = useSelector((store) => store.adminLoanRequest.valRecord);
+  const valTabs = useSelector((store) => store.adminLoanRequest.valTabs);
+  const mainPageState = useSelector((store) => store.resetState.mainPageState);
+  const [ListCooperative, setListCooperative] = useState([]);
+  // const [valCooperative, setValCooperative] = useState({
+  //   title: "همه تشکل ها",
+  //   userName: 0,
+  // });
+  // const [valSort, setValSort] = useState(1);
+  // const [query, setQuery] = useState("");
+  // const [valRecord, setValRecord] = useState(1);
+  // const [valTabs, setValTabs] = useState(0);
+  const [listAdminLoanRequest, setListAdminLoanRequest] = useState([]);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [numPending, setNumPending] = useState(0);
+  const [numReject, setNumReject] = useState(0);
+  const [numConfirm, setNumConfirm] = useState(0);
+  const [numArchive, setNumArchive] = useState(0);
+  const [flagNumber, setFlagNumber] = useState(false);
+
+  const disPatch = useDispatch();
+
+  const optionSort = [
+    { id: 1, title: "آخرین درج" },
+    { id: 2, title: "آخرین ویرایش" },
+    { id: 3, title: "عنوان صعودی" },
+    { id: 4, title: "عنوان نزولی" },
+  ];
+  const listStatusCooperative = [
+    {
+      id: 1,
+      name: "25",
+    },
+    {
+      id: 2,
+      name: "50",
+    },
+    {
+      id: 3,
+      name: "75",
+    },
+    {
+      id: 4,
+      name: "100",
+    },
+  ];
+
+  // const url = useLocation();
+  // const Navigate = useNavigate();
+  // useEffect(() => {
+  //   if (pageState === 0 && url.pathname !== "/profile/AdminLoanRequest") {
+  //     Navigate("/profile/AdminLoanRequest");
+  //   }
+  //   if (
+  //     pageState === 1 &&
+  //     url.pathname !== "/profile/AdminLoanRequest/details"
+  //   ) {
+  //     Navigate("/profile/AdminLoanRequest/details");
+  //   }
+  // }, [pageState]);
+  // useEffect(() => {
+  //   if (url.pathname === "/profile/AdminLoanRequest") {
+  //     setPageState(0);
+  //   }
+  // }, [url]);
+
+  useEffect(() => {
+    axios
+      .get(mainDomain + "/api/BasicInfo/Cooperative", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        setListCooperative(res.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  //   get LoanRequest list
+  const config = {
+    method: "get",
+    url: `${mainDomain}/api/LoanRequest`,
+    params:
+      valCooperative.userName !== 0
+        ? {
+            userName: valCooperative.userName,
+            find: query,
+            statusId: valTabs + 2,
+            sortId: valSort,
+            pageSize: valRecord * 25,
+            page: pageIndex,
+          }
+        : {
+            find: query,
+            statusId: valTabs + 2,
+            sortId: valSort,
+            pageSize: valRecord * 25,
+            page: pageIndex,
+          },
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+
+  const getLoanRequestAdminList = async (newParams) => {
+    config.params = { ...config.params, ...newParams };
+    setListAdminLoanRequest([]);
+    setIsLoading(true);
+    await axios(config)
+      .then((res) => {
+        setIsLoading(false);
+        setListAdminLoanRequest(res.data);
+        // if (res.data.length > 0) {
+        //   if (res.data[0].status === 2) {
+        //     setNumPending(res.data[0].totalRows);
+        //   }
+        //   if (res.data[0].status === 3) {
+        //     setNumReject(res.data[0].totalRows);
+        //   }
+        //   if (res.data[0].status === 4) {
+        //     setNumConfirm(res.data[0].totalRows);
+        //   }
+        //   if (res.data[0].status === 5) {
+        //     setNumArchive(res.data[0].totalRows);
+        //   }
+        // } else {
+        //   if (config.params.statusId === 2) {
+        //     setNumPending(0);
+        //   }
+        //   if (config.params.statusId === 3) {
+        //     setNumReject(0);
+        //   }
+        //   if (config.params.statusId === 4) {
+        //     setNumConfirm(0);
+        //   }
+        //   if (config.params.statusId === 5) {
+        //     setNumArchive(0);
+        //   }
+        // }
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getLoanRequestAdminList();
+  }, [mainPageState]);
+
+  // get Statistics
+  useEffect(() => {
+    axios
+      .get(mainDomain + "/api/LoanRequest/Statistics", {
+        params: {
+          ...(valCooperative.userName !== 0
+            ? { userName: valCooperative.userName }
+            : {}),
+          find: query,
+        },
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        setNumPending(res.data.find((e) => e.status === 2).number);
+        setNumReject(res.data.find((e) => e.status === 3).number);
+        setNumConfirm(res.data.find((e) => e.status === 4).number);
+        setNumArchive(res.data.find((e) => e.status === 5).number);
+      })
+      .catch(() => {});
+  }, [flagNumber]);
+
+  return (
+    <>
+      {
+        <div>
+          <div className="flex flex-wrap mt-8 justify-start px-4">
+            <div className="sm:w-1/4 w-full px-1">
+              <Autocomplete
+                sx={{
+                  "& .MuiInputBase-input": {
+                    textAlign: "start",
+                    fontSize: "12px",
+                    height: "1.45rem",
+                  },
+                }}
+                size="small"
+                disabled={ListCooperative.length === 0}
+                className="w-full"
+                value={valCooperative}
+                options={
+                  ListCooperative.length > 0
+                    ? [
+                        { title: "همه تشکل ها", userName: 0 },
+                        ...ListCooperative,
+                      ]
+                    : [{ title: "همه تشکل ها", userName: 0 }]
+                }
+                getOptionLabel={(option) => (option.title ? option.title : "")}
+                onChange={(event, newValue) => {
+                  setFlagNumber((e) => !e);
+                  if (newValue) {
+                    if (newValue.userName !== 0) {
+                      disPatch(setValCooperative(newValue));
+                      getLoanRequestAdminList({
+                        userName: newValue.userName,
+                        page: 1,
+                      });
+                      setPageIndex(1);
+                    } else {
+                      delete config.params.userName;
+                      disPatch(setValCooperative(newValue));
+                      getLoanRequestAdminList({
+                        page: 1,
+                      });
+                      setPageIndex(1);
+                    }
+                  }
+                  if (!newValue) {
+                    delete config.params.userName;
+                    disPatch(setValCooperative(""));
+                    getLoanRequestAdminList({
+                      page: 1,
+                    });
+                    setPageIndex(1);
+                  }
+                }}
+                freeSolo
+                renderOption={(props, option) => (
+                  <li {...props} key={option.title}>
+                    <div className="text-start text-sm py-2">
+                      {option.title ? option.title : ""}
+                    </div>
+                  </li>
+                )}
+                renderInput={(params) => (
+                  <TextField {...params} label={"لیست تشکل ها"} />
+                )}
+              />
+            </div>
+            <div className="sm:w-1/4 w-full px-1 sm:mt-0 mt-3">
+              <FormControl size="small" color="primary" className="w-full">
+                <InputLabel
+                  color="primary"
+                  className="px-2"
+                  id="demo-simple-select-label"
+                >
+                  مرتب سازی
+                </InputLabel>
+                <Select
+                  sx={{
+                    "& .MuiSelect-select": {
+                      fontSize: "14px",
+                      textAlign: "left",
+                    },
+                  }}
+                  size="small"
+                  className="w-full"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={valSort}
+                  label="مرتب سازی"
+                  color="primary"
+                  onChange={(e) => {
+                    disPatch(setValSort(e.target.value));
+                    getLoanRequestAdminList({
+                      sortId: e.target.value,
+                      page: 1,
+                    });
+                    setPageIndex(1);
+                  }}
+                >
+                  {optionSort.map((e) => (
+                    <MenuItem sx={{ fontSize: "12px" }} key={e.id} value={e.id}>
+                      {e.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div className="sm:w-1/4 w-full px-1 sm:mt-0 mt-3">
+              <div className="w-full flex justify-center items-center relative">
+                <TextField
+                  sx={{
+                    "& .MuiInputBase-input::placeholder": { fontSize: "12px" },
+                  }}
+                  size="small"
+                  type="text"
+                  className="w-full"
+                  id="outlined-multiline-flexible"
+                  label="جستجو"
+                  placeholder="عنوان"
+                  name="name"
+                  onChange={(e) => {
+                    disPatch(setQuery(e.target.value));
+                  }}
+                  value={query}
+                />
+                <div className="absolute left-0 top-0">
+                  <IconButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                    onClick={() => {
+                      getLoanRequestAdminList({
+                        find: query,
+                        page: 1,
+                      });
+                      setPageIndex(1);
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        opacity="0.4"
+                        d="M11.01 20.02C15.9861 20.02 20.02 15.9861 20.02 11.01C20.02 6.03391 15.9861 2 11.01 2C6.03391 2 2 6.03391 2 11.01C2 15.9861 6.03391 20.02 11.01 20.02Z"
+                        fill={themeMode === "dark" ? "#fff" : "#1787B0"}
+                      />
+                      <path
+                        d="M21.9901 18.95C21.6601 18.34 20.9601 18 20.0201 18C19.3101 18 18.7001 18.29 18.3401 18.79C17.9801 19.29 17.9001 19.96 18.1201 20.63C18.5501 21.93 19.3001 22.22 19.7101 22.27C19.7701 22.28 19.8301 22.28 19.9001 22.28C20.3401 22.28 21.0201 22.09 21.6801 21.1C22.2101 20.33 22.3101 19.56 21.9901 18.95Z"
+                        fill={themeMode === "dark" ? "#fff" : "#1787B0"}
+                      />
+                    </svg>
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+            <div className="sm:w-1/4 w-full px-1 sm:mt-0 mt-3">
+              <FormControl size="small" color="primary" className="w-full">
+                <InputLabel
+                  color="primary"
+                  className="px-2"
+                  id="demo-simple-select-label"
+                >
+                  رکورد
+                </InputLabel>
+                <Select
+                  size="small"
+                  className="w-full"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={valRecord}
+                  label="رکورد"
+                  color="primary"
+                  onChange={(e) => {
+                    disPatch(setValRecord(e.target.value));
+                    getLoanRequestAdminList({
+                      pageSize: e.target.value * 25,
+                      page: 1,
+                    });
+                    setPageIndex(1);
+                  }}
+                >
+                  {listStatusCooperative.map((e) => (
+                    <MenuItem sx={{ fontSize: "12px" }} key={e.id} value={e.id}>
+                      {e.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          </div>
+          <TabsAdminLoanRequest
+            getLoanRequestAdminList={getLoanRequestAdminList}
+            setPageIndex={setPageIndex}
+            numPending={numPending}
+            numReject={numReject}
+            numConfirm={numConfirm}
+            numArchive={numArchive}
+          />
+          <TableAdminLoanRequest
+            listAdminLoanRequest={listAdminLoanRequest}
+            pageIndex={pageIndex}
+            pageSize={valRecord * 25}
+            isLoading={isLoading}
+            setPageIndex={setPageIndex}
+            getLoanRequestAdminList={getLoanRequestAdminList}
+            setFlagNumber={setFlagNumber}
+          />
+        </div>
+      }
+    </>
+  );
+}

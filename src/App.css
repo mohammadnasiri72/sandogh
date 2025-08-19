@@ -1,0 +1,531 @@
+body {
+  text-align: center;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+@font-face {
+  font-family: "Pelak";
+  src: url("./../src/assets/fonts/PelakFA-Medium.ttf");
+}
+@font-face {
+  font-family: "Nazanin";
+  src: url("./../src/assets/fonts/Bnazanin/BNAZANB.woff");
+}
+@font-face {
+  font-family: "Titr";
+  src: url("./../src/assets/fonts/Btitr/BTITRBD.woff");
+}
+
+@font-face {
+  font-family: "IranianSans";
+  src: url("/src/assets/fonts/IRANSansWeb(FaNum)_Light.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "IranianSans";
+  src: url("/src/assets/fonts/IRANSansWeb(FaNum)_Medium.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Vazir";
+  src: url("/src/assets/fonts/Vazir-Thin-FD-WOL.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Vazir";
+  src: url("/src/assets/fonts/Vazir-Light-FD-WOL.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Vazir";
+  src: url("/src/assets/fonts/Vazir-FD-WOL.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Vazir";
+  src: url("/src/assets/fonts/Vazir-Bold-FD-WOL.ttf");
+  font-weight: 900;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap");
+@font-face {
+  font-family: "yekan";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Heavy.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Heavy.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Heavy.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "yekan";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Bold.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 100%;
+}
+
+@font-face {
+  font-family: "yekan";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Light.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Light.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "yekan-fat";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Fat.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Fat.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Fat.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "yekan";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Regular.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "yekan";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Thin.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Thin.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "yekan";
+  src: url("/src/assets/fonts/YekanBakhFaNum-Medium.eot");
+  src: url("/src/assets/fonts/YekanBakhFaNum-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/YekanBakhFaNum-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 100%;
+}
+
+@font-face {
+  font-family: "dripicons-v2";
+  src: url("/src/assets/fonts/dripicons-v2.eot");
+  src: url("/src/assets/fonts/dripicons-v2.eot?#iefix")
+      format("embedded-opentype"),
+    url("/src/assets/fonts/dripicons-v2.woff") format("woff"),
+    url("/src/assets/fonts/dripicons-v2.ttf") format("truetype"),
+    url("/src/assets/fonts/dripicons-v2.svg#dripicons-v2") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.b-titr {
+  font-family: "Titr" !important;
+}
+
+@keyframes custom-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+}
+.animate__custom-fadeInUp {
+  animation-name: custom-fadeInUp;
+}
+.MuiMenu-paper {
+  transition: none !important;
+}
+
+.animate__animated.animate__custom-fadeInUp {
+  animation-duration: 0.3s; /* تنظیم زمان انیمیشن */
+}
+
+@keyframes custom-fadeInUpAccount {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(5px);
+  }
+}
+.animate__custom-fadeInUpAccount {
+  animation-name: custom-fadeInUpAccount;
+}
+.animate__animated.animate__custom-fadeInUpAccount {
+  animation-duration: 0.3s; /* تنظیم زمان انیمیشن */
+}
+
+@keyframes custom-fadeInUpMenuHoriz {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+.animate__custom-fadeInUpMenuHoriz {
+  animation-name: custom-fadeInUpMenuHoriz;
+}
+.animate__animated.animate__custom-fadeInUpMenuHoriz {
+  animation-duration: 0.3s; /* تنظیم زمان انیمیشن */
+}
+
+@keyframes custom-fadeInUpLang {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(15px);
+  }
+}
+
+.animate__custom-fadeInUpLang {
+  animation-name: custom-fadeInUpLang;
+}
+.animate__animated.animate__custom-fadeInUpLang {
+  animation-duration: 0.3s; /* تنظیم زمان انیمیشن */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* .setting-icon-nav {
+  animation: spin 2s linear infinite;
+} */
+
+.toast-modal {
+  z-index: 55555555 !important;
+}
+
+.mini-stat-icon {
+  overflow: hidden;
+  position: relative;
+}
+.mini-stat-icon::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 54px;
+  background-color: #fff1;
+  left: 16px;
+  transform: rotate(32deg);
+  top: -5px;
+  transition: all 0.4s;
+}
+.mini-stat-icon::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 54px;
+  background-color: #fff1;
+  left: 16px;
+  transform: rotate(32deg);
+  top: -5px;
+  transition: all 0.5s;
+  left: -12px;
+  width: 12px;
+  transition: all 0.5s;
+}
+
+.mini-stats-wid:hover .mini-stat-icon::after {
+  left: 60px;
+}
+
+@keyframes custom-fadeInUpDel {
+  from {
+    opacity: 0;
+    transform: translateY(40px); /* تنظیم مقدار پیمایش */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+.animate__custom-fadeInUpDel {
+  animation-name: custom-fadeInUpDel;
+}
+.MuiMenu-paper {
+  transition: none !important;
+}
+
+.animate__animated.animate__custom-fadeInUpDel {
+  animation-duration: 0.8s; /* تنظیم زمان انیمیشن */
+}
+
+.limited-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+.group:hover .child {
+  animation-name: custom-fadeInUpDel;
+  animation-duration: 0.3s;
+}
+.box-seting {
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  backdrop-filter: inherit !important;
+  background-blend-mode: multiply !important;
+  background-position: center !important;
+  background-color: #000a;
+}
+
+.scroll-box {
+  scrollbar-width: thin; /* برای فایرفاکس */
+} /* برای مرورگرهای وبکیت (کروم، سافاری) */
+.scroll-box::-webkit-scrollbar {
+  width: 8px; /* عرض نوار اسکرول */
+}
+.scroll-box::-webkit-scrollbar-track {
+  background: #f1f1f1; /* رنگ پس‌زمینه نوار اسکرول */
+}
+.scroll-box::-webkit-scrollbar-thumb {
+  border-radius: 10px; /* گرد کردن گوشه‌های نوار اسکرول */
+  border: 2px solid #f1f1f1; /* رنگ پس‌زمینه نوار اسکرول */
+}
+.scroll-box {
+  direction: ltr;
+}
+.scroll-box::-webkit-scrollbar {
+  transform: scaleX(-1);
+}
+
+.custom-switch:not(.ant-switch-checked) {
+  background-color: #ff4d4f; /* تغییر رنگ پس‌زمینه هنگام غیرفعال شدن */
+}
+
+.custom-switch:not(.ant-switch-checked):hover {
+  background-color: #ff7875; /* تغییر رنگ پس‌زمینه هنگام هاور و غیرفعال بودن */
+}
+
+@keyframes puls {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+@keyframes puls-red {
+  0% {
+    box-shadow: 0 0 0 0 rgb(239 68 68);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+@keyframes puls-orange {
+  0% {
+    box-shadow: 0 0 0 0 rgb(249 115 22);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+@keyframes puls-green {
+  0% {
+    box-shadow: 0 0 0 0 rgb(16 185 129);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+
+#loan-request-container {
+  direction: rtl;
+  text-align: right;
+}
+
+#loan-request-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+#loan-request-container hr {
+  margin-bottom: 5px;
+}
+#loan-request-container table table {
+  margin: 0px 0;
+}
+
+#loan-request-container th,
+#loan-request-container td {
+  border: 1px solid #000;
+  padding: 5px;
+  text-align: center;
+}
+
+#loan-request-container .centered {
+  text-align: center;
+  margin-top: 20px;
+}
+#loan-request-container p {
+  line-height: var(--dynamic-line-height);
+  min-height: 20px;
+}
+#loan-request-container div {
+  line-height: var(--dynamic-line-height);
+  min-height: 20px;
+}
+#loan-request-container textarea {
+  border: 1px solid #0005;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 7px;
+}
+#loan-request-container input {
+  border: 1px solid #0005;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 7px;
+}
+
+#loan-request-container input[type="radio"] {
+  margin-right: 15px;
+}
+/* #loan-request-container .full-page {
+  height: 100vh;
+} */
+.formCapital * {
+  border: none !important;
+}
+
+/* @media print {
+  @page {
+    margin: 0 !important;
+    size: landscape;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+  .test {
+    display: none;
+  }
+  #loan-request-container .full-page {
+    height: 100vh;
+  }
+
+  #loan-request-container,
+  #loan-request-container * {
+    visibility: visible;
+  }
+  #loan-request-container {
+    height: 100vh !important;
+  }
+ 
+  #loan-request-container {
+    position: absolute;
+    left: 0 !important;
+    top: 0 !important;
+    padding: 10px !important;
+    
+    width: 100% !important;
+  }
+
+  body::before,
+  body::after,
+  header,
+  footer {
+    display: none !important;
+  }
+  #loan-request-container td.bgc1 {
+    background-color: #eee !important;
+  }
+
+  .print-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: lightgray;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+  }
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: lightgray;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px;
+  }
+  .print-content {
+    margin: 60px 0;
+  }
+
+  .print-content > {
+    page-break-inside: avoid;
+  }
+} */
+
+.custom-steps.ant-steps-navigation .ant-steps-item::before,
+.custom-steps.ant-steps-navigation .ant-steps-item::after {
+  display: none !important;
+}
+
+.rmdp-button , .rmdp-cancel{
+  display: none !important;
+}
+.rmdp-action-button {
+  display: block !important;
+}
+
+
+
+.spin-confirm .ant-spin-dot i {
+  background-color: #ffffff; 
+}
