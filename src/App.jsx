@@ -8,7 +8,7 @@ import { mainDomain } from "./utils/mainDomain";
 import NoInternet from "./pages/NoInternet";
 
 function App() {
-  const [isOnline, setIsOnline] = useState(navigator.onLine); // وضعیت اینترنت
+  const [isOnline, setIsOnline] = useState(navigator.onLine); // وضعییت اینترنت
   const font = useSelector((store) => store.setting.fontFamily);
   const setting = useSelector((store) => store.setting.setting);
 
