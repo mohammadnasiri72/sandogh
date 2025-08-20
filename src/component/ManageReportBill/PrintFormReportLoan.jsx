@@ -36,7 +36,72 @@ export default function PrintFormReportLoan({getDataPrint, formDetails , setForm
  
 
   const handlePrint = () => {
+    // ۱. حذف استایل‌های پرینت قبلی (اگر وجود دارد)
+    const existingPrintStyle = document.getElementById("print-style");
+    if (existingPrintStyle) {
+      existingPrintStyle.remove();
+    }
+
+    // ۲. ایجاد یک استایل جدید برای پرینت
+    const style = document.createElement("style");
+    style.id = "print-style";
+    style.innerHTML = `
+     @media print {
+      @page {
+         margin: 0px;
+        size: landscape;
+  }
+
+  #loan-request-container{
+    height: 100vh !important;
+  }
+  #loan-request-container .capital_sheet_bg {
+    height: 100% !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+  .test{
+    display: none;
+  }
+
+  #loan-request-container,
+  #loan-request-container * {
+    visibility: visible;
+  }
+  #loan-request-container {
+    position: absolute;
+    left: 0 !important;
+    top: 0 !important;
+     right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    padding: 10px !important;
+    
+  }
+   
+
+  body::before,
+  body::after,
+  header,
+  footer {
+    display: none;
+  }
+}
+    `;
+    document.head.appendChild(style);
+
+    // ۳. پرینت گرفتن
     window.print();
+
+    // ۴. حذف استایل‌های پرینت بعد از پرینت
+    setTimeout(() => {
+      const printStyle = document.getElementById("print-style");
+      if (printStyle) {
+        printStyle.remove();
+      }
+    }, 100); // تاخیر ۱۰۰ میلی‌ثانیه قبل از حذف استایل
   };
 
  

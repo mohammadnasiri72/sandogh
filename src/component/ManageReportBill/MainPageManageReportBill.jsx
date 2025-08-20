@@ -350,7 +350,7 @@ export default function MainPageManageReportBill() {
     const data = {
       SelectedCols: selectedCols,
       SelectedColsWidth: selectedColsWidth,
-      provinceId: valProvince.provinceId || 0,
+      provinceId: Number(valProvince.provinceId) || 0,
       Date1: date1,
       Date2: date2,
       FileExtenstion: ".print",
@@ -422,7 +422,7 @@ export default function MainPageManageReportBill() {
 
   return (
     <>
-      <div className="px-5">
+      <div className="px-5 test">
         <div className="flex flex-wrap">
           <div className="sm:w-1/4 w-full px-2 sm:mt-0 mt-5">
             <Autocomplete

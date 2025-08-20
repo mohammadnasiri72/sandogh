@@ -12,8 +12,8 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { SyncLoader } from "react-spinners";
-import { mainDomain } from "../../utils/mainDomain";
 import Swal from "sweetalert2";
+import { mainDomain } from "../../utils/mainDomain";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,14 +42,77 @@ export default function ModalVisitFormSupervisor({ Supervisor }) {
     customClass: "toast-modal",
   });
 
-
   const formRef = useRef(null);
 
-  const handlePrint = () => {
+  
+const handlePrint = () => {
+    // ۱. حذف استایل‌های پرینت قبلی (اگر وجود دارد)
+    const existingPrintStyle = document.getElementById("print-style");
+    if (existingPrintStyle) {
+      existingPrintStyle.remove();
+    }
+
+    // ۲. ایجاد یک استایل جدید برای پرینت
+    const style = document.createElement("style");
+    style.id = "print-style";
+    style.innerHTML = `
+     @media print {
+      @page {
+         margin: 0px;
+        size: landscape;
+  }
+
+  #loan-request-container{
+    height: 100vh !important;
+  }
+  #loan-request-container .capital_sheet_bg {
+    height: 100% !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+  .test{
+    display: none;
+  }
+
+  #loan-request-container,
+  #loan-request-container * {
+    visibility: visible;
+  }
+  #loan-request-container {
+    position: absolute;
+    left: 0 !important;
+    top: 0 !important;
+     right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    padding: 10px !important;
+    
+  }
+   
+
+  body::before,
+  body::after,
+  header,
+  footer {
+    display: none;
+  }
+}
+    `;
+    document.head.appendChild(style);
+
+    // ۳. پرینت گرفتن
     window.print();
+
+    // ۴. حذف استایل‌های پرینت بعد از پرینت
+    setTimeout(() => {
+      const printStyle = document.getElementById("print-style");
+      if (printStyle) {
+        printStyle.remove();
+      }
+    }, 100); // تاخیر ۱۰۰ میلی‌ثانیه قبل از حذف استایل
   };
-
-
 
   useEffect(() => {
     if (open) {
@@ -69,7 +132,6 @@ export default function ModalVisitFormSupervisor({ Supervisor }) {
           .catch(() => {
             setIsLoading(false);
           });
-
       } else {
         setIsLoading(true);
         axios
@@ -93,7 +155,6 @@ export default function ModalVisitFormSupervisor({ Supervisor }) {
     setOpen(false);
     setFormDetails("");
   };
-
 
   // const handleSubmit = () => {
   //   formRef.current.querySelectorAll("input").forEach((input) => {
@@ -156,22 +217,20 @@ export default function ModalVisitFormSupervisor({ Supervisor }) {
   //     });
   // };
 
-
   const handleDisableInputs = () => {
-    const parentDiv = document.getElementById('loan-request-container');
+    const parentDiv = document.getElementById("loan-request-container");
     if (!parentDiv) return;
-    const inputs = parentDiv.getElementsByTagName('input');
-    const textareas = parentDiv.getElementsByTagName('textarea');
+    const inputs = parentDiv.getElementsByTagName("input");
+    const textareas = parentDiv.getElementsByTagName("textarea");
     if (inputs.length === 0) {
-      return
+      return;
     } else {
-
       for (let i = 0; i < inputs.length; i++) {
-        inputs[i].disabled = true; 
+        inputs[i].disabled = true;
       }
     }
     if (textareas.length === 0) {
-      return
+      return;
     } else {
       for (let i = 0; i < textareas.length; i++) {
         textareas[i].disabled = true;
@@ -180,8 +239,8 @@ export default function ModalVisitFormSupervisor({ Supervisor }) {
   };
 
   useEffect(() => {
-    handleDisableInputs()
-  }, [formDetails])
+    handleDisableInputs();
+  }, [formDetails]);
 
   return (
     <>
@@ -297,21 +356,6 @@ export default function ModalVisitFormSupervisor({ Supervisor }) {
                 <span className="px-1 whitespace-nowrap">پرینت</span>
               </div>
             </Button>
-            {/* <Button
-              size="large"
-              onClick={handleSubmit}
-              sx={{
-                fontSize: "12px",
-                transition: "0.6s",
-                color: "#fff",
-                background: "rgb(16 185 129)",
-                boxShadow: "none",
-              }}
-            >
-              <div className="flex items-center">
-                <span className="px-1 whitespace-nowrap">ذخیره</span>
-              </div>
-            </Button> */}
           </div>
           <IconButton
             edge="start"
