@@ -69,6 +69,8 @@ export default function MainPageMessage() {
   };
   useEffect(() => {
     getListMessage();
+    
+    
   }, [mainPageState]);
 
   return (

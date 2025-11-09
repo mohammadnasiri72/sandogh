@@ -74,7 +74,6 @@ export default function VisitDetailLetter({ loanDocs }) {
     return momentDate.toDate();
   };
 
-  console.log(loanDocs.letterInfo);
 
   useEffect(() => {
     if (loanDocs.letterInfo?.letterDate) {

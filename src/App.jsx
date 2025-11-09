@@ -2,15 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
+import NoInternet from "./pages/NoInternet";
 import { changThemeColor, setGallery, setSetting } from "./redux/slice/setting";
 import Router from "./routes/Router";
 import { mainDomain } from "./utils/mainDomain";
-import NoInternet from "./pages/NoInternet";
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine); // وضعیت اینترنت
   const font = useSelector((store) => store.setting.fontFamily);
   const setting = useSelector((store) => store.setting.setting);
+  
 
   const disPatch = useDispatch();
   const paletColor = [
@@ -79,7 +80,15 @@ function App() {
           (e) => e.propertyKey === "site_icon"
         )?.value;
       })
-      .catch(() => {});
+      .catch(() => {
+        // if (err?.response?.status === 401) {
+        //   navigate("/Auth/Login");
+        // }
+        // if (err?.response?.status === 500) {
+        //   navigate("/Auth/Login");
+        // }
+        //  navigate("/Auth/Login");
+      });
   }, []);
 
   useEffect(() => {
@@ -124,9 +133,7 @@ function App() {
   }, [setting]);
   return (
     <>
-      {!isOnline && (
-        <NoInternet />
-      )}
+      {!isOnline && <NoInternet />}
       {isOnline && (
         <div style={{ fontFamily: font }}>
           <Router />

@@ -64,7 +64,15 @@ export default function NotifficationNav() {
         .then((res) => {
           setNumMessageUnread(res.data);
         })
-        .catch(() => {});
+        .catch((err) => {
+          if (err?.response?.status === 401) {
+            Navigate("/Auth/Login");
+          }
+          if (err?.response?.status === 500) {
+            Navigate("/Auth/Login");
+          }
+          // Navigate("/Auth/Login");
+        });
     }
   }, [flag]);
 
