@@ -83,7 +83,7 @@ export default function MainPageManageLoan() {
           Authorization: `Bearer ${user.token}`,
         },
       })
-      .then((res) => {
+      .then((res) => {        
         setListCooperative(res.data);
       })
       .catch(() => {});
@@ -813,6 +813,7 @@ export default function MainPageManageLoan() {
               setPageIndex={setPageIndex}
               getLoanAdminList={getLoanAdminList}
               valRecord={valRecord}
+              ListCooperative={ListCooperative}
             />
           )}
           {(valTab === 0 || valTab === 1 || valTab === 6) && (

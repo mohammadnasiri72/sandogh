@@ -24,6 +24,7 @@ import DateReceivedConfirm from "./DateReceivedConfirm";
 import DropDownForm from "./DropDownForm";
 import SelectFieldTableAdminLoan from "./SelectFieldTableAdminLoan";
 import ModalBackLoan from "./modalBackLoan";
+import Transcript from "./Transcript";
 
 TableManageLoan.propTypes = {
   listAdminLoan: PropTypes.array,
@@ -32,6 +33,7 @@ TableManageLoan.propTypes = {
   pageSize: PropTypes.number,
   setPageIndex: PropTypes.func,
   getLoanAdminList: PropTypes.func,
+  ListCooperative: PropTypes.array,
 };
 export default function TableManageLoan({
   listAdminLoan,
@@ -40,6 +42,7 @@ export default function TableManageLoan({
   pageSize,
   setPageIndex,
   getLoanAdminList,
+  ListCooperative
 }) {
   const themeMode = useSelector((store) => store.setting.themeMode);
   const themeColor = useSelector((store) => store.setting.themeColor);
@@ -468,6 +471,12 @@ export default function TableManageLoan({
                                   getLoanAdminList={getLoanAdminList}
                                 />
 
+                                {valTab === 3 && (
+                                  <Transcript
+                                   loan={e}
+                                    ListCooperative={ListCooperative}
+                                  />
+                                )}
                                 {valTab === 2 && (
                                   <DatePaidConfirm
                                     loan={e}

@@ -41,6 +41,8 @@ export default function TableLoan({
   const fontSize = useSelector((store) => store.setting.fontSize);
   const [selectedField, setSelectedField] = useState([]);
 
+  
+
   return (
     <>
       <div className="px-5">
@@ -259,9 +261,7 @@ export default function TableLoan({
                               align="center"
                             >
                               <div className="flex justify-center items-center">
-                                {/* {e.status !== 100 && e.loanRequestId > 0 && (
-                                <VisitFile id={e.loanRequestId} />
-                              )} */}
+                               
                                 {e.loanRequestId > 0 && (
                                   <ModalVisitForm loan={e} />
                                 )}
@@ -275,7 +275,7 @@ export default function TableLoan({
                             >
                               <div className="flex justify-center items-center">
                                 {e.status !== 100 && e.loanRequestId > 0 && (
-                                  <VisitFile id={e.loanRequestId} />
+                                  <VisitFile id={e.loanRequestId} id2={e.id}/>
                                 )}
                               </div>
                             </TableCell>

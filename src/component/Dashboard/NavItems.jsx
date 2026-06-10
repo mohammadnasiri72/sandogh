@@ -27,6 +27,10 @@ export const ListItems = ({ item, setOpen, child }) => {
   const isActive = url.pathname.includes(item.path);
   const themeColor = useSelector((store) => store.setting.themeColor);
   const themeMode = useSelector((store) => store.setting.themeMode);
+  const listFormToSign = useSelector(
+    (store) => store.formToSign.listFormToSign,
+  );
+
   const disPatch = useDispatch();
   const ListItemIconStyle = styled(ListItemIcon)({
     width: "5px",
@@ -73,11 +77,11 @@ export const ListItems = ({ item, setOpen, child }) => {
                 ? "#161c24"
                 : "#fff"
               : child
-              ? lightenColor(
-                  themeColor.bgColor.match(/#.{0,6}(?=(?:.*#|$))/g)[0],
-                  9
-                )
-              : "",
+                ? lightenColor(
+                    themeColor.bgColor.match(/#.{0,6}(?=(?:.*#|$))/g)[0],
+                    9,
+                  )
+                : "",
             borderRadius: setOpen ? "10px" : child ? "10px" : "10px 0 0 10px",
             ml: setOpen ? 2 : child ? 5 : 3,
             mr: setOpen ? 2 : child ? 5 : 0,
@@ -90,10 +94,10 @@ export const ListItems = ({ item, setOpen, child }) => {
                   ? "#161c24"
                   : "#fff"
                 : child
-                ? themeMode === "dark"
-                  ? "#161c24"
-                  : "#fff"
-                : "",
+                  ? themeMode === "dark"
+                    ? "#161c24"
+                    : "#fff"
+                  : "",
               color: child ? (themeMode === "dark" ? "#fff" : "#161c24") : "",
             },
             "&:hover .MuiListItemIcon-root": {
@@ -126,7 +130,6 @@ export const ListItems = ({ item, setOpen, child }) => {
 
           {item.icon && <ListItemIconStyle>{item.icon}</ListItemIconStyle>}
           <ListItemText
-            primary={item.title}
             sx={{
               "& .MuiListItemText-primary": {
                 fontSize: "14px",
@@ -134,7 +137,21 @@ export const ListItems = ({ item, setOpen, child }) => {
               },
               whiteSpace: "nowrap",
             }}
-          />
+          >
+            <div className="flex items-center">
+              <span>{item.title}</span>
+              {item.title === "کارتابل" && listFormToSign.length > 0 && (
+                <span className="px-2 ">
+                  <span
+                    style={{ width: "20px", height: "20px" }}
+                    className="px-2 bg-red-600 rounded-full flex justify-center items-center text-white text-sm"
+                  >
+                    {listFormToSign.length}
+                  </span>
+                </span>
+              )}
+            </div>
+          </ListItemText>
         </ListItemButton>
       )}
       {item.phone && (
@@ -158,21 +175,21 @@ export const ListItems = ({ item, setOpen, child }) => {
                 ? "#161c24"
                 : "#fff"
               : child
-              ? lightenColor(
-                  themeColor.bgColor.match(/#.{0,6}(?=(?:.*#|$))/g)[0],
-                  9
-                )
-              : "",
+                ? lightenColor(
+                    themeColor.bgColor.match(/#.{0,6}(?=(?:.*#|$))/g)[0],
+                    9,
+                  )
+                : "",
             "&:hover": {
               background: isActive
                 ? themeMode === "dark"
                   ? "#161c24"
                   : "#fff"
                 : child
-                ? themeMode === "dark"
-                  ? "#161c24"
-                  : "#fff"
-                : "",
+                  ? themeMode === "dark"
+                    ? "#161c24"
+                    : "#fff"
+                  : "",
               color: child ? (themeMode === "dark" ? "#fff" : "#161c24") : "",
             },
             "&:hover .MuiListItemIcon-root": {
@@ -237,21 +254,21 @@ export const ListItems = ({ item, setOpen, child }) => {
                 ? "#161c24"
                 : "#fff"
               : child
-              ? lightenColor(
-                  themeColor.bgColor.match(/#.{0,6}(?=(?:.*#|$))/g)[0],
-                  9
-                )
-              : "",
+                ? lightenColor(
+                    themeColor.bgColor.match(/#.{0,6}(?=(?:.*#|$))/g)[0],
+                    9,
+                  )
+                : "",
             "&:hover": {
               background: isActive
                 ? themeMode === "dark"
                   ? "#161c24"
                   : "#fff"
                 : child
-                ? themeMode === "dark"
-                  ? "#161c24"
-                  : "#fff"
-                : "",
+                  ? themeMode === "dark"
+                    ? "#161c24"
+                    : "#fff"
+                  : "",
               color: child ? (themeMode === "dark" ? "#fff" : "#161c24") : "",
             },
             "&:hover .MuiListItemIcon-root": {
@@ -711,7 +728,7 @@ export default function NavItems({ setOpen }) {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
-          }
+          },
         )
         .then(() => {
           navigate("/Auth/login");
@@ -743,7 +760,17 @@ export default function NavItems({ setOpen }) {
       <div className="flex justify-center items-center w-full px-2">
         {!isColaps && (
           <div className="flex flex-col items-center justify-center">
-            <List sx={{ width: "100%", padding: 0, margin: 0 , display:'flex' , flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
+            <List
+              sx={{
+                width: "100%",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <img
                 className="w-20"
                 // src="/images/file_2024-17-12--17-39-03 2.png"
@@ -784,16 +811,22 @@ export default function NavItems({ setOpen }) {
               <List key={item.id} sx={{ width: "100%", padding: 0, margin: 0 }}>
                 {!item.children &&
                   !isColaps &&
-                  (item.role === user.roles[0] || item.role === "both") && (
+                  (item.role === user.roles[0] ||
+                    item.role === user.roles[1] ||
+                    item.role === "both") && (
                     <ListItems item={item} setOpen={setOpen} />
                   )}
                 {item.children &&
                   !isColaps &&
-                  (item.role === user.roles[0] || item.role === "both") && (
+                  (item.role === user.roles[0] ||
+                    item.role === user.roles[1] ||
+                    item.role === "both") && (
                     <ChildrenAccordion item={item} setOpenMenu={setOpen} />
                   )}
                 {isColaps &&
-                  (item.role === user.roles[0] || item.role === "both") && (
+                  (item.role === user.roles[0] ||
+                    item.role === user.roles[1] ||
+                    item.role === "both") && (
                     <ListItemsColaps item={item} setOpen={setOpen} />
                   )}
               </List>

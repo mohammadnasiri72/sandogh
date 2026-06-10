@@ -8,6 +8,8 @@ import ModalDetailsFormInvoice from "./ModalDetailsFormInvoice";
 import ModalDetailsFormLoanRequest from "./ModalDetailsFormLoanRequest";
 import ModalDetailsFormPaymentOrder from "./ModalDetailsFormPaymentOrder";
 import { useSelector } from "react-redux";
+import ModalDetailsFormDocumentation from "./ModalDetailsFormDocumentation";
+import ModalDetailsFormDeduction from "./ModalDetailsFormDeduction";
 
 DropDownForm.propTypes = {
   LoanEdited: PropTypes.object,
@@ -25,7 +27,37 @@ export default function DropDownForm({
   const [openFormContract, setOpenFormContract] = useState(false);
   const [openFormPaymentOrder, setOpenFormPaymentOrder] = useState(false);
   const [openFormInvoice, setOpenFormInvoice] = useState(false);
+  const [openFormDocumentation, setOpenFormDocumentation] = useState(false);
+  const [openFormDeduction, setOpenFormDeduction] = useState(false);
   const valTab = useSelector((store) => store.adminLoan.valTab);
+
+  const numberProgress = LoanEdited.contractTypeId === 1 ? 6 : 5;
+  const persentProgres =
+    LoanEdited.contractTypeId === 1
+      ? LoanEdited.formStatus === 8
+        ? 100
+        : LoanEdited.formStatus === 7
+          ? 500 / 6
+          : LoanEdited.formStatus === 4
+            ? 400 / 6
+            : LoanEdited.formStatus === 3
+              ? 300 / 6
+              : LoanEdited.formStatus === 2
+                ? 200 / 6
+                : LoanEdited.formStatus === 1
+                  ? 100 / 6
+                  : 400 / 6
+      : LoanEdited.formStatus === 7
+        ? 100
+        : LoanEdited.formStatus === 4
+          ? 400 / 5
+          : LoanEdited.formStatus === 3
+            ? 300 / 5
+            : LoanEdited.formStatus === 2
+              ? 200 / 5
+              : LoanEdited.formStatus === 1
+                ? 100 / 5
+                : 400 / 5;
 
   const handleMenuClick = (e) => {
     switch (e.key) {
@@ -40,6 +72,12 @@ export default function DropDownForm({
         break;
       case "4":
         setOpenFormInvoice(true);
+        break;
+      case "7":
+        setOpenFormDocumentation(true);
+        break;
+      case "8":
+        setOpenFormDeduction(true);
         break;
       default:
         break;
@@ -96,6 +134,34 @@ export default function DropDownForm({
           <span>فرم صورت حساب</span>
         </div>
       </Menu.Item>
+      {valTab === 3 && (
+        <Menu.Item
+          style={{
+            backgroundColor:
+              LoanEdited?.formStatus >= 7 ? "rgb(209 250 229)" : "",
+          }}
+          key="7"
+        >
+          <div className="flex justify-center items-center">
+            {LoanEdited?.formStatus >= 7 && <MdDone />}
+            <span>فرم نامه مستندات</span>
+          </div>
+        </Menu.Item>
+      )}
+      {LoanEdited.contractTypeId === 1 && valTab === 3 && (
+        <Menu.Item
+          style={{
+            backgroundColor:
+              LoanEdited?.formStatus >= 8 ? "rgb(209 250 229)" : "",
+          }}
+          key="8"
+        >
+          <div className="flex justify-center items-center">
+            {LoanEdited?.formStatus >= 8 && <MdDone />}
+            <span>فرم نامه کسر 5 درصد</span>
+          </div>
+        </Menu.Item>
+      )}
     </Menu>
   );
   return (
@@ -114,7 +180,85 @@ export default function DropDownForm({
               },
             }}
           >
-            {valTab !== 2 && (
+            {valTab === 2 ? (
+              <Progress
+                type="circle"
+                percent={(LoanEdited.formStatus / 4) * 100}
+                steps={{ count: 4, gap: 7 }}
+                trailColor="rgba(0, 0, 0, 0.06)"
+                strokeWidth={10}
+                strokeColor="#34c38f"
+                width={40}
+                format={() => (
+                  <div className="flex justify-center items-center">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        opacity="0.4"
+                        d="M16.24 3.65002H7.76C5.29 3.65002 3.29 5.66002 3.29 8.12002V17.53C3.29 19.99 5.3 22 7.76 22H16.23C18.7 22 20.7 19.99 20.7 17.53V8.12002C20.71 5.65002 18.7 3.65002 16.24 3.65002Z"
+                        fill="#34c38f"
+                      />
+                      <path
+                        d="M14.35 2H9.65C8.61 2 7.76 2.84 7.76 3.88V4.82C7.76 5.86 8.6 6.7 9.64 6.7H14.35C15.39 6.7 16.23 5.86 16.23 4.82V3.88C16.24 2.84 15.39 2 14.35 2Z"
+                        fill="#34c38f"
+                      />
+                      <path
+                        d="M15 12.95H8C7.59 12.95 7.25 12.61 7.25 12.2C7.25 11.79 7.59 11.45 8 11.45H15C15.41 11.45 15.75 11.79 15.75 12.2C15.75 12.61 15.41 12.95 15 12.95Z"
+                        fill="#34c38f"
+                      />
+                      <path
+                        d="M12.38 16.95H8C7.59 16.95 7.25 16.61 7.25 16.2C7.25 15.79 7.59 15.45 8 15.45H12.38C12.79 15.45 13.13 15.79 13.13 16.2C13.13 16.61 12.79 16.95 12.38 16.95Z"
+                        fill="#34c38f"
+                      />
+                    </svg>
+                  </div>
+                )}
+              />
+            ) : valTab === 3 ? (
+              <Progress
+                type="circle"
+                percent={persentProgres}
+                steps={{ count: numberProgress, gap: 7 }}
+                trailColor="rgba(0, 0, 0, 0.06)"
+                strokeWidth={10}
+                strokeColor="#34c38f"
+                width={40}
+                format={() => (
+                  <div className="flex justify-center items-center">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        opacity="0.4"
+                        d="M16.24 3.65002H7.76C5.29 3.65002 3.29 5.66002 3.29 8.12002V17.53C3.29 19.99 5.3 22 7.76 22H16.23C18.7 22 20.7 19.99 20.7 17.53V8.12002C20.71 5.65002 18.7 3.65002 16.24 3.65002Z"
+                        fill="#34c38f"
+                      />
+                      <path
+                        d="M14.35 2H9.65C8.61 2 7.76 2.84 7.76 3.88V4.82C7.76 5.86 8.6 6.7 9.64 6.7H14.35C15.39 6.7 16.23 5.86 16.23 4.82V3.88C16.24 2.84 15.39 2 14.35 2Z"
+                        fill="#34c38f"
+                      />
+                      <path
+                        d="M15 12.95H8C7.59 12.95 7.25 12.61 7.25 12.2C7.25 11.79 7.59 11.45 8 11.45H15C15.41 11.45 15.75 11.79 15.75 12.2C15.75 12.61 15.41 12.95 15 12.95Z"
+                        fill="#34c38f"
+                      />
+                      <path
+                        d="M12.38 16.95H8C7.59 16.95 7.25 16.61 7.25 16.2C7.25 15.79 7.59 15.45 8 15.45H12.38C12.79 15.45 13.13 15.79 13.13 16.2C13.13 16.61 12.79 16.95 12.38 16.95Z"
+                        fill="#34c38f"
+                      />
+                    </svg>
+                  </div>
+                )}
+              />
+            ) : (
               <div className="flex justify-center items-center">
                 <svg
                   width="24"
@@ -159,73 +303,6 @@ export default function DropDownForm({
                 </svg>
               </div>
             )}
-            {valTab === 2 && (
-              <Progress
-                type="circle"
-                percent={(LoanEdited.formStatus / 4) * 100}
-                steps={{ count: 4, gap: 7 }}
-                trailColor="rgba(0, 0, 0, 0.06)"
-                strokeWidth={10}
-                strokeColor="#34c38f"
-                width={40}
-                format={() => (
-                  <div className="flex justify-center items-center">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        opacity="0.4"
-                        d="M16.24 3.65002H7.76C5.29 3.65002 3.29 5.66002 3.29 8.12002V17.53C3.29 19.99 5.3 22 7.76 22H16.23C18.7 22 20.7 19.99 20.7 17.53V8.12002C20.71 5.65002 18.7 3.65002 16.24 3.65002Z"
-                        fill="#34c38f"
-                      />
-                      <path
-                        d="M14.35 2H9.65C8.61 2 7.76 2.84 7.76 3.88V4.82C7.76 5.86 8.6 6.7 9.64 6.7H14.35C15.39 6.7 16.23 5.86 16.23 4.82V3.88C16.24 2.84 15.39 2 14.35 2Z"
-                        fill="#34c38f"
-                      />
-                      <path
-                        d="M15 12.95H8C7.59 12.95 7.25 12.61 7.25 12.2C7.25 11.79 7.59 11.45 8 11.45H15C15.41 11.45 15.75 11.79 15.75 12.2C15.75 12.61 15.41 12.95 15 12.95Z"
-                        fill="#34c38f"
-                      />
-                      <path
-                        d="M12.38 16.95H8C7.59 16.95 7.25 16.61 7.25 16.2C7.25 15.79 7.59 15.45 8 15.45H12.38C12.79 15.45 13.13 15.79 13.13 16.2C13.13 16.61 12.79 16.95 12.38 16.95Z"
-                        fill="#34c38f"
-                      />
-                    </svg>
-                  </div>
-                )}
-              />
-            )}
-            {/* <div className="flex items-center">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      opacity="0.4"
-                      d="M16.24 3.65002H7.76C5.29 3.65002 3.29 5.66002 3.29 8.12002V17.53C3.29 19.99 5.3 22 7.76 22H16.23C18.7 22 20.7 19.99 20.7 17.53V8.12002C20.71 5.65002 18.7 3.65002 16.24 3.65002Z"
-                      fill="#34c38f"
-                    />
-                    <path
-                      d="M14.35 2H9.65C8.61 2 7.76 2.84 7.76 3.88V4.82C7.76 5.86 8.6 6.7 9.64 6.7H14.35C15.39 6.7 16.23 5.86 16.23 4.82V3.88C16.24 2.84 15.39 2 14.35 2Z"
-                      fill="#34c38f"
-                    />
-                    <path
-                      d="M15 12.95H8C7.59 12.95 7.25 12.61 7.25 12.2C7.25 11.79 7.59 11.45 8 11.45H15C15.41 11.45 15.75 11.79 15.75 12.2C15.75 12.61 15.41 12.95 15 12.95Z"
-                      fill="#34c38f"
-                    />
-                    <path
-                      d="M12.38 16.95H8C7.59 16.95 7.25 16.61 7.25 16.2C7.25 15.79 7.59 15.45 8 15.45H12.38C12.79 15.45 13.13 15.79 13.13 16.2C13.13 16.61 12.79 16.95 12.38 16.95Z"
-                      fill="#34c38f"
-                    />
-                  </svg>
-                </div> */}
           </IconButton>
         </a>
       </Dropdown>
@@ -264,6 +341,26 @@ export default function DropDownForm({
       <ModalDetailsFormInvoice
         open={openFormInvoice}
         setOpen={setOpenFormInvoice}
+        flag={flag}
+        setFlag={setFlag}
+        status={LoanEdited.status}
+        loanId={LoanEdited.id}
+        getLoanAdminList={getLoanAdminList}
+        LoanEdited={LoanEdited}
+      />
+      <ModalDetailsFormDocumentation
+        open={openFormDocumentation}
+        setOpen={setOpenFormDocumentation}
+        flag={flag}
+        setFlag={setFlag}
+        status={LoanEdited.status}
+        loanId={LoanEdited.id}
+        getLoanAdminList={getLoanAdminList}
+        LoanEdited={LoanEdited}
+      />
+      <ModalDetailsFormDeduction
+        open={openFormDeduction}
+        setOpen={setOpenFormDeduction}
         flag={flag}
         setFlag={setFlag}
         status={LoanEdited.status}

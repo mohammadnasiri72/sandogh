@@ -28,6 +28,7 @@ export default function MainPageLoanList() {
   const [valTab, setValTab] = useState(
     location.state ? location.state.myData : 0
   );
+  
   const [listLoan, setListLoan] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pageIndex, setPageIndex] = useState(1);

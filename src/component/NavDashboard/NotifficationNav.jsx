@@ -16,6 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { mainDomain } from "../../utils/mainDomain";
 import ModalDetailMessage from "./ModalDetailMessage";
 import ModalResponseMessage from "./ModalResponseMessage";
+import { useDispatch } from "react-redux";
+import {
+  setListFormToSign,
+  setLoadingSign,
+} from "../../redux/slice/formToSign";
 
 export default function NotifficationNav() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -33,6 +38,8 @@ export default function NotifficationNav() {
   const [flag, setFlag] = useState(false);
   const themeMode = useSelector((store) => store.setting.themeMode);
   const Navigate = useNavigate();
+
+  const disPatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
@@ -73,6 +80,31 @@ export default function NotifficationNav() {
           }
           // Navigate("/Auth/Login");
         });
+    }
+  }, [flag]);
+
+  // دریافت لیست فرم‌های منتظر امضا
+  const fetchData = () => {
+    if (!user?.token) return;
+    axios
+      .get(mainDomain + "/api/Form/WatingSign", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        disPatch(setLoadingSign(false));
+        disPatch(setListFormToSign(res.data));
+      })
+      .catch(() => {
+        disPatch(setLoadingSign(false));
+      });
+  };
+
+  useEffect(() => {
+    if (user?.roles?.includes("CeoCooperative")) {
+      disPatch(setLoadingSign(true));
+      fetchData();
     }
   }, [flag]);
 
@@ -199,8 +231,8 @@ export default function NotifficationNav() {
                       themeMode === "dark" && !m.seen
                         ? "rgb(30 41 59)"
                         : themeMode !== "dark" && !m.seen
-                        ? "rgb(226 232 240)"
-                        : "",
+                          ? "rgb(226 232 240)"
+                          : "",
                   }}
                   onClick={() => {
                     setOpenModalMessage(true);

@@ -49,14 +49,14 @@ export default function NavItemHorizontal() {
         <div className="flex gap-1 w-full h-full" key={groupItem.subheader}>
           {groupItem.items.map((item) => {
             return (
-              (item.role === user.roles[0] || item.role === "both") && (
+              (item.role === user.roles[0]|| item.role === user.roles[1] || item.role === "both") && (
                 <div key={item.id}>
                   {!item.children &&
-                    (item.role === user.roles[0] || item.role === "both") && (
+                    (item.role === user.roles[0]|| item.role === user.roles[1] || item.role === "both") && (
                       <ListItems item={item} />
                     )}
                   {item.children &&
-                    (item.role === user.roles[0] || item.role === "both") && (
+                    (item.role === user.roles[0]|| item.role === user.roles[1] || item.role === "both") && (
                       <ListItemsChild item={item} />
                     )}
                 </div>

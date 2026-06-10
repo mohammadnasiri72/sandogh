@@ -29,6 +29,8 @@ import Message from "../pages/profile/Message";
 import NewLoanRequest from "../pages/profile/NewLoanRequest";
 import ProfileDetails from "../pages/profile/ProfileDetails";
 import ManageReportBill from "../pages/profile/ManageReportBill";
+import ManageSign from "../pages/profile/ManageSign";
+import DocumentList from "../pages/profile/DocumentList";
 
 export default function Router() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -99,6 +101,15 @@ export default function Router() {
           element:
             user?.roles[0] === "AdminCooperative" ? (
               <HomeDashboardAdmin />
+            ) : (
+              <NotFound />
+            ),
+        },
+        {
+          path: "AdminSign",
+          element:
+            user?.roles[1] === "CeoCooperative" ? (
+              <ManageSign />
             ) : (
               <NotFound />
             ),
@@ -299,6 +310,11 @@ export default function Router() {
           path: "LoanList",
           element:
             user?.roles[0] !== "Cooperative" ? <NotFound /> : <LoanList />,
+        },
+        {
+          path: "referdoc",
+          element:
+            user?.roles[0] !== "Cooperative" ? <NotFound /> : <DocumentList />,
         },
         {
           path: "Message",

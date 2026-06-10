@@ -8,6 +8,7 @@ import adminLoanRequestReducer from '../redux/slice/adminLoanRequest'
 import adminLoanReducer from '../redux/slice/adminLoan'
 import resetStateSliceReducer from '../redux/slice/resetState'
 import capitalSliceReducer from '../redux/slice/capital'
+import formToSignSliceReducer from '../redux/slice/formToSign'
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     adminLoan : adminLoanReducer,
     resetState : resetStateSliceReducer,
     capital : capitalSliceReducer,
+    formToSign : formToSignSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

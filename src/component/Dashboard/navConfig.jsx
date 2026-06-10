@@ -1,3 +1,4 @@
+import { Description } from "@mui/icons-material";
 import { AiFillPhone } from "react-icons/ai";
 import { BiSolidMessageSquareDetail } from "react-icons/bi";
 import { BsCreditCard2FrontFill } from "react-icons/bs";
@@ -44,6 +45,13 @@ const sidebarConfig = [
         path: "/profile/AdminDashboard",
         icon: <GoHomeFill />,
         role: "AdminCooperative",
+        id: 2,
+      },
+      {
+        title: "کارتابل",
+        path: "/profile/AdminSign",
+        icon: <Description />,
+        role: "CeoCooperative",
         id: 2,
       },
       {
@@ -160,6 +168,13 @@ const sidebarConfig = [
         icon: <TbCreditCardFilled />,
         role: "Cooperative",
         id: 16,
+      },
+      {
+        title: "رونوشت‌ها",
+        path: "/profile/referdoc",
+        icon: <Description />,
+        role: "Cooperative",
+        id: 16.5,
       },
       // {
       //   title: "کارتابل تسهیلات",

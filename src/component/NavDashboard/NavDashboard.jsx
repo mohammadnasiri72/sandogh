@@ -27,10 +27,10 @@ export default function NavDashboard() {
             ? themeDirection === "rtl" && isColaps
               ? "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pr-16 duration-300 z-10 shadow-md"
               : themeDirection === "rtl" && !isColaps
-              ? "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pr-64 duration-300 z-10 shadow-md"
-              : themeDirection === "ltr" && isColaps
-              ? "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pl-16 duration-300 z-10 shadow-md"
-              : "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pl-64 duration-300 z-10 shadow-md"
+                ? "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pr-64 duration-300 z-10 shadow-md"
+                : themeDirection === "ltr" && isColaps
+                  ? "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pl-16 duration-300 z-10 shadow-md"
+                  : "fixed left-0 right-0 top-0  h-[4.5rem]  px-5 lg:pl-64 duration-300 z-10 shadow-md"
             : "fixed left-0 right-0 top-0  h-[4.5rem]  px-5  duration-300 z-10 shadow-md"
         }
       >
@@ -119,7 +119,8 @@ export default function NavDashboard() {
               }
             >
               <FullScreenNav />
-              {user.roles[0] !== "Supervisor" && <NotifficationNav />}
+              {user.roles[0] !== "Supervisor" &&
+                user.roles[0] !== "SupervisorReport" && <NotifficationNav />}
               <Setting />
               <AccountNav />
             </div>

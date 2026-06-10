@@ -11,7 +11,6 @@ function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine); // وضعیت اینترنت
   const font = useSelector((store) => store.setting.fontFamily);
   const setting = useSelector((store) => store.setting.setting);
-  
 
   const disPatch = useDispatch();
   const paletColor = [
@@ -77,7 +76,7 @@ function App() {
         disPatch(setSetting(res.data.settings));
         const faviconElement = document.getElementById("dynamic-favicon");
         faviconElement.href = res.data.settings.find(
-          (e) => e.propertyKey === "site_icon"
+          (e) => e.propertyKey === "site_icon",
         )?.value;
       })
       .catch(() => {
@@ -91,13 +90,15 @@ function App() {
       });
   }, []);
 
+ 
+
   useEffect(() => {
     if (!JSON.parse(localStorage.getItem("themeColor"))) {
       if (setting.length > 0) {
         if (setting.find((e) => e.propertyKey === "site_default_color")) {
           if (
             Number(
-              setting.find((e) => e.propertyKey === "site_default_color").value
+              setting.find((e) => e.propertyKey === "site_default_color").value,
             ) <= 4
           ) {
             disPatch(
@@ -105,15 +106,15 @@ function App() {
                 paletColor[
                   Number(
                     setting.find((e) => e.propertyKey === "site_default_color")
-                      .value
+                      .value,
                   ) - 1
-                ]
-              )
+                ],
+              ),
             );
           }
           if (
             Number(
-              setting.find((e) => e.propertyKey === "site_default_color").value
+              setting.find((e) => e.propertyKey === "site_default_color").value,
             ) > 4
           ) {
             disPatch(
@@ -121,10 +122,10 @@ function App() {
                 paletColorGradient[
                   Number(
                     setting.find((e) => e.propertyKey === "site_default_color")
-                      .value - 4
+                      .value - 4,
                   ) - 1
-                ]
-              )
+                ],
+              ),
             );
           }
         }

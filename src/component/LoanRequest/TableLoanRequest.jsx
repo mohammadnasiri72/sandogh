@@ -404,7 +404,7 @@ export default function TableLoanRequest({
                                     />
                                   )}
 
-                                  {/* {<VisitFile id={e.id} />} */}
+                                  
                                 </div>
                                 {/* <div className="sm:hidden flex">
                               <ActionResponsive goToDetail={goToDetail} e={e} />

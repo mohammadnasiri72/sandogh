@@ -1,95 +1,29 @@
 import { Button, Dialog, Divider, IconButton, Slide } from "@mui/material";
-import axios from "axios";
 import PropTypes from "prop-types";
-import { forwardRef, useEffect, useRef, useState } from "react";
-import { IoCloseSharp, IoSaveOutline } from "react-icons/io5";
+import { forwardRef, useRef } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { SyncLoader } from "react-spinners";
-import Swal from "sweetalert2";
-import { mainDomain } from "../../utils/mainDomain";
-import ConfirmDeleteForm from "./confirmDeleteForm";
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-ModalDetailsFormInvoice.propTypes = {
+ModalDetailsFormTabTranscript.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
-  flag: PropTypes.bool,
-  setFlag: PropTypes.func,
-  status: PropTypes.number,
-  loanId: PropTypes.number,
-  getLoanAdminList: PropTypes.func,
-  LoanEdited: PropTypes.object,
+  formDetails: PropTypes.string,
+  typeId: PropTypes.number,
 };
-export default function ModalDetailsFormInvoice({
+export default function ModalDetailsFormTabTranscript({
   open,
   setOpen,
-  flag,
-  setFlag,
-  status,
-  loanId,
-  getLoanAdminList,
-  LoanEdited,
+  formDetails,
+  typeId,
 }) {
   const themeMode = useSelector((store) => store.setting.themeMode);
   const themeColor = useSelector((store) => store.setting.themeColor);
   const fontSize = useSelector((store) => store.setting.fontSize);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [isLoading, setIsLoading] = useState(false);
-  const [formDetails, setFormDetails] = useState("");
-  const [formId, setFormId] = useState(0);
-
-  // import sweet alert 2
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-start",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    customClass: "toast-modal",
-  });
 
   const formRef = useRef(null);
-
-  const handleSubmit = () => {
-    const data = {
-      formId,
-      formTypeId: 4,
-      body: formRef.current.innerHTML,
-      description: "",
-    };
-
-    axios
-      // .post(mainDomain + `/api/LoanForm/${loanId}`, data, {
-      .post(mainDomain + `/api/Form/Loan/${loanId}`, data, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then(() => {
-        if (getLoanAdminList) {
-          getLoanAdminList();
-        }
-        setFlag((e) => !e);
-        Toast.fire({
-          icon: "success",
-          text: "فرم صورت حساب با موفقیت ذخیره شد",
-          customClass: {
-            container: "toast-modal",
-          },
-        });
-      })
-      .catch((err) => {
-        Toast.fire({
-          icon: "error",
-          text: err.response ? err.response.data : "خطای شبکه",
-          customClass: {
-            container: "toast-modal",
-          },
-        });
-      });
-  };
 
   const handlePrint = () => {
     // ۱. حذف استایل‌های پرینت قبلی (اگر وجود دارد)
@@ -105,7 +39,7 @@ export default function ModalDetailsFormInvoice({
      @media print {
       @page {
          margin: 0px;
-        size: landscape;
+        size:${(typeId === 4) && "landscape"} ;
   }
 
   #loan-request-container{
@@ -160,30 +94,8 @@ export default function ModalDetailsFormInvoice({
     }, 100); // تاخیر ۱۰۰ میلی‌ثانیه قبل از حذف استایل
   };
 
-  useEffect(() => {
-    if (open) {
-      setIsLoading(true);
-      axios
-        .get(mainDomain + `/api/Form/Loan/${loanId}/${4}`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        })
-        .then((res) => {
-          
-          setIsLoading(false);
-          setFormDetails(res.data.body);
-          setFormId(res.data.formId);
-        })
-        .catch(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [open, flag]);
-
   const handleClose = () => {
     setOpen(false);
-    setFormDetails("");
   };
 
   return (
@@ -257,31 +169,6 @@ export default function ModalDetailsFormInvoice({
                 <span className="px-1 whitespace-nowrap">پرینت</span>
               </div>
             </Button>
-            {status === 100 && (
-              <Button
-                size="large"
-                onClick={handleSubmit}
-                sx={{
-                  fontSize: "12px",
-                  transition: "0.6s",
-                  color: "#fff",
-                  background: "rgb(16 185 129)",
-                  boxShadow: "none",
-                }}
-              >
-                <div className="flex items-center">
-                  <IoSaveOutline className="text-lg" />
-                  <span className="px-1 whitespace-nowrap">ذخیره</span>
-                </div>
-              </Button>
-            )}
-            {status === 100 && LoanEdited?.formStatus >= 4 && (
-              <ConfirmDeleteForm
-                setFlagDel={setFlag}
-                id={formId}
-                getLoanAdminList={getLoanAdminList}
-              />
-            )}
           </div>
           <IconButton
             edge="start"
@@ -296,13 +183,6 @@ export default function ModalDetailsFormInvoice({
 
         <div className="">
           <div className="px-2 mt-20">
-            {isLoading && (
-              <div className="flex justify-center items-center w-full h-96">
-                <SyncLoader
-                  color={themeColor.bgColor?.match(/#.{0,6}(?=(?:.*#|$))/g)[0]}
-                />
-              </div>
-            )}
             {formDetails && (
               <div
                 style={{

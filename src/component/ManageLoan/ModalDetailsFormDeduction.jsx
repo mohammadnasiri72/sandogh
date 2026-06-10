@@ -12,7 +12,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-ModalDetailsFormInvoice.propTypes = {
+ModalDetailsFormDeduction.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
   flag: PropTypes.bool,
@@ -22,7 +22,7 @@ ModalDetailsFormInvoice.propTypes = {
   getLoanAdminList: PropTypes.func,
   LoanEdited: PropTypes.object,
 };
-export default function ModalDetailsFormInvoice({
+export default function ModalDetailsFormDeduction({
   open,
   setOpen,
   flag,
@@ -55,7 +55,7 @@ export default function ModalDetailsFormInvoice({
   const handleSubmit = () => {
     const data = {
       formId,
-      formTypeId: 4,
+      formTypeId: 8,
       body: formRef.current.innerHTML,
       description: "",
     };
@@ -105,7 +105,6 @@ export default function ModalDetailsFormInvoice({
      @media print {
       @page {
          margin: 0px;
-        size: landscape;
   }
 
   #loan-request-container{
@@ -164,13 +163,12 @@ export default function ModalDetailsFormInvoice({
     if (open) {
       setIsLoading(true);
       axios
-        .get(mainDomain + `/api/Form/Loan/${loanId}/${4}`, {
+        .get(mainDomain + `/api/Form/Loan/${loanId}/${8}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         })
         .then((res) => {
-          
           setIsLoading(false);
           setFormDetails(res.data.body);
           setFormId(res.data.formId);
@@ -257,25 +255,26 @@ export default function ModalDetailsFormInvoice({
                 <span className="px-1 whitespace-nowrap">پرینت</span>
               </div>
             </Button>
-            {status === 100 && (
-              <Button
-                size="large"
-                onClick={handleSubmit}
-                sx={{
-                  fontSize: "12px",
-                  transition: "0.6s",
-                  color: "#fff",
-                  background: "rgb(16 185 129)",
-                  boxShadow: "none",
-                }}
-              >
-                <div className="flex items-center">
-                  <IoSaveOutline className="text-lg" />
-                  <span className="px-1 whitespace-nowrap">ذخیره</span>
-                </div>
-              </Button>
-            )}
-            {status === 100 && LoanEdited?.formStatus >= 4 && (
+            {status === 100 ||
+              (status === 101 && (
+                <Button
+                  size="large"
+                  onClick={handleSubmit}
+                  sx={{
+                    fontSize: "12px",
+                    transition: "0.6s",
+                    color: "#fff",
+                    background: "rgb(16 185 129)",
+                    boxShadow: "none",
+                  }}
+                >
+                  <div className="flex items-center">
+                    <IoSaveOutline className="text-lg" />
+                    <span className="px-1 whitespace-nowrap">ذخیره</span>
+                  </div>
+                </Button>
+              ))}
+            {status === 100 && LoanEdited?.formStatus >= 8 && (
               <ConfirmDeleteForm
                 setFlagDel={setFlag}
                 id={formId}
