@@ -53,7 +53,6 @@ function TabHistory({ cooperativeId }) {
     setLoadingForms(true);
     setLoadingFiles(true);
     axios
-      // .get(mainDomain + `/api/ReferDoc/Cooperative/${cooperativeId}`, {
       .get(mainDomain + `/api/ReferDoc/Loan/${cooperativeId}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
